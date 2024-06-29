@@ -1,11 +1,32 @@
 import { View, Text } from "react-native";
 import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { HomeScreen, OnboardingScreen, SignupScreen } from "./screens";
+import { Easing } from "react-native";
 
+const Stack = createNativeStackNavigator();
+const transitionConfig = {
+  animation: "slide",
+  config: {
+    duration: 500,
+  },
+};
 const App = () => {
   return (
-    <View className="flex-1 justify-center items-center">
-      <Text className="text-xl text-blue-500">App</Text>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+          animation: "ios",
+          gestureEnabled: true,
+        }}
+      >
+        <Stack.Screen name="Onboard" component={OnboardingScreen} />
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Signup" component={SignupScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
