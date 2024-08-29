@@ -18,7 +18,7 @@ const OnboardingScreen = () => {
                     </TouchableOpacity>
                 </View>
                 <View>
-                    <TouchableOpacity className="w-full  shadow-sm py-3 rounded-lg bg-[#000000]   flex items-center justify-center">
+                    <TouchableOpacity onPress={() => Navigation.navigate('LoginScreen')} className="w-full  shadow-sm py-3 rounded-lg bg-[#000000]   flex items-center justify-center">
                         <Text className="text-[#ffffff] text-lg font-semibold">Sign In</Text>
                     </TouchableOpacity>
                 </View>

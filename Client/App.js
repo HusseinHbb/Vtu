@@ -2,8 +2,13 @@ import { View, Text } from "react-native";
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { HomeScreen, OnboardingScreen, SignupScreen } from "./screens";
-import { Easing } from "react-native";
+import {
+  HomeScreen,
+  LoginScreen,
+  OnboardingScreen,
+  SignupOtpScreen,
+  SignupScreen,
+} from "./screens";
 
 const Stack = createNativeStackNavigator();
 const transitionConfig = {
@@ -24,7 +29,9 @@ const App = () => {
       >
         <Stack.Screen name="Onboard" component={OnboardingScreen} />
         <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="Signup" component={SignupScreen} />
+        <Stack.Screen name="SignupOtpScreen" component={SignupOtpScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
