@@ -1,8 +1,7 @@
 import axios from "axios";
-import { AxiosAdapter } from "axios-react-native";
-axios.defaults.adapter = AxiosAdapter;
 
-export const Baseurl = "http://127.0.0.1:5001/vtu-app-b6d1f/us-central1/app";
+export const Baseurl =
+  "https://jmk55ltl-5001.euw.devtunnels.ms/vtu-app-b6d1f/us-central1/app";
 
 // send email for otp
 export const sendemail = async (email) => {
@@ -10,7 +9,7 @@ export const sendemail = async (email) => {
 
   try {
     const res = await axios.post(`${Baseurl}/api/otp`, { email });
-    console.log("this", res.data);
+    console.log("this", res.data.otp);
     return res.data;
   } catch (err) {
     console.log("this", err);
