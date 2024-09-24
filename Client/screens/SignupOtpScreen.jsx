@@ -4,17 +4,35 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import OtpTextInput from 'react-native-otp-textinput';
 import { AsyncStorage } from 'react-native';
+import { sendemail, verifyotp } from '../api';
 
 
 const SignupOtpScreen = () => {
     const Navigation = useNavigation();
     const route = useRoute();
     const [canResend, setCanResend] = useState(false);
-    const [countdown, setCountdown] = useState(120); // 2 minutes
-    const HandleOtpCode = () => {
-        Navigation.goBack()
-    }
+    const [countdown, setCountdown] = useState(120);
     const email = route.params.email;
+    const [otp, setOtp] = useState('');
+
+    const HandleOtpCode = async () => {
+        try {
+            const res = await verifyotp(email, otp)
+            console.log(res);
+            if (res == 200) {
+                Navigation.navigate('PasswordScreen', { email: email })
+            } else {
+                console.log("wrong password");
+                return null;
+            }
+        } catch (err) {
+            console.log(err)
+
+        }
+    }
+    const handleOtpDigit = (otp) => {
+        setOtp(otp)
+    }
 
     useEffect(() => {
         const timerId = setInterval(() => {
@@ -25,6 +43,13 @@ const SignupOtpScreen = () => {
         }, 1000);
         return () => clearInterval(timerId);
     }, [countdown]);
+
+    //resend code function
+    const resendCode = () => {
+        sendemail(email)
+        setCanResend(false);
+        setCountdown(120);
+    }
     return (
         <View className="py-11 px-2 h-full bg-[#333333]">
             <TouchableOpacity onPress={() => Navigation.goBack()}>
@@ -46,15 +71,18 @@ const SignupOtpScreen = () => {
                             <OtpTextInput
                                 className="flex-1  self-center  mr-2 py-2 border-b border-gray-400 text-base text-center text-[#E5E7EB] font-semibold -mt-1"
                                 inputCount={4}
+                                handleTextChange={(otp) => handleOtpDigit(otp)}
+                            // onChange={(otp) => setOtp(otp)}
+                            // onComplete={(otp) => setOtp(otp)}
+                            // value={otp}
+                            // onChangeText={HandleOtp}
+
                             />
                         </View>
                         <View className="flex flex-row justify-between ">
                             <View>
                             </View>
-                            <TouchableOpacity disabled={!canResend} onPress={() => {
-                                setCanResend(false);
-                                setCountdown(120); // reset timer
-                            }}>
+                            <TouchableOpacity disabled={!canResend} onPress={resendCode}>
                                 <Text className={`font-bold text-white text-sm ${!canResend ? "text-gray-400" : ""}`}>{canResend ? 'Resend code' : countdown > 0 ? `Resend code in ${Math.floor(countdown / 60)}:${String(countdown % 60).padStart(2, '0')}` : 'Resend code'}</Text>
                             </TouchableOpacity>
                         </View>

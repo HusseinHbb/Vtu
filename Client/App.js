@@ -8,6 +8,7 @@ import {
   OnboardingScreen,
   SignupOtpScreen,
   SignupScreen,
+  PasswordScreen,
 } from "./screens";
 
 const Stack = createNativeStackNavigator();
@@ -28,10 +29,11 @@ const App = () => {
         }}
       >
         <Stack.Screen name="Onboard" component={OnboardingScreen} />
-        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="HomeScreen" component={HomeScreen} />
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="Signup" component={SignupScreen} />
         <Stack.Screen name="SignupOtpScreen" component={SignupOtpScreen} />
+        <Stack.Screen name="PasswordScreen" component={PasswordScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

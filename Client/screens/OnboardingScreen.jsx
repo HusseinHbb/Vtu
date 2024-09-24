@@ -1,30 +1,33 @@
-import { View, Text, Button, TouchableOpacity } from 'react-native'
+import { View, Text, Button, TouchableOpacity, SafeAreaView } from 'react-native'
 import React from 'react'
 import Swiper from 'react-native-swiper'
 import { useNavigation } from '@react-navigation/native'
 const OnboardingScreen = () => {
     const Navigation = useNavigation()
     return (
-        <View className="flex h-full bg-[#9c8dd9] justify-between">
-            <Swiper autoplay={true} autoplayTimeout={7}>
-                <Screen1 />
-                <Screen2 />
-                <Screen3 />
-            </Swiper>
-            <View className="flex-col px-6 w-full space-y-3 py-8 justify-evenly">
-                <View>
-                    <TouchableOpacity onPress={() => Navigation.navigate('Signup')} className="w-full   shadow-sm py-3 rounded-lg bg-[#f3f2f6]  flex items-center justify-center">
-                        <Text className=" text-black text-lg font-semibold">Open a new account</Text>
-                    </TouchableOpacity>
+        <SafeAreaView className="flex-1 bg-[#9c8dd9]">
+            <View className="flex h-full  justify-between">
+                <Swiper autoplay={true} autoplayTimeout={7}>
+                    <Screen1 />
+                    <Screen2 />
+                    <Screen3 />
+                </Swiper>
+                <View className="flex-col px-6 w-full space-y-3 py-8 justify-evenly">
+                    <View>
+                        {/* PasswordScreen */}
+                        <TouchableOpacity onPress={() => Navigation.navigate('Signup')} className="w-full   shadow-sm py-3 rounded-lg bg-[#f3f2f6]  flex items-center justify-center">
+                            <Text className=" text-black text-lg font-semibold">Open a new account</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View>
+                        <TouchableOpacity onPress={() => Navigation.navigate('LoginScreen')} className="w-full  shadow-sm py-3 rounded-lg bg-[#000000]   flex items-center justify-center">
+                            <Text className="text-[#ffffff] text-lg font-semibold">Sign In</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-                <View>
-                    <TouchableOpacity onPress={() => Navigation.navigate('LoginScreen')} className="w-full  shadow-sm py-3 rounded-lg bg-[#000000]   flex items-center justify-center">
-                        <Text className="text-[#ffffff] text-lg font-semibold">Sign In</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
 
-        </View>
+            </View>
+        </SafeAreaView>
     )
 }
 
