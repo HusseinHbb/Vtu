@@ -38,7 +38,9 @@ router.post("/", (req, res) => {
 });
 
 router.post("/verifyotp", async (req, res) => {
-  const email = req.body.email;
+  const email = req.body.email.toLowerCase();
+  console.log(email);
+
   const otp = req.body.otp;
 
   const storedotp = (

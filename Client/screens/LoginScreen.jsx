@@ -1,9 +1,12 @@
 import { View, Text, TouchableOpacity, TextInput, SafeAreaView, useWindowDimensions } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import { SvgXml } from 'react-native-svg';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import { Linking } from 'react-native';
+import { signIn, validateUserJWTToken } from '../api';
+import { useDispatch } from 'react-redux';
+import { setAuthToken } from '../context/actions/tokenAction';
 
 const SignupScreen = () => {
     const googleIcon = `
@@ -11,10 +14,49 @@ const SignupScreen = () => {
   `;
     const navigation = useNavigation();
     const notchHeight = useWindowDimensions().height * 0.05;
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const dispatch = useDispatch();
+    const Navigation = useNavigation()
+
+    const handleEmail = (text) => {
+        setEmail(text)
+    }
+
+    const handlePassword = (text) => {
+        setPassword(text)
+    }
+
+    const handleSignin = async () => {
+        console.log("clicked");
+        try {
+            const token = await signIn(email, password)
+            console.log(token);
+
+
+            const validatedToken = await validateUserJWTToken(token);
+            console.log("Validated Token:", validatedToken);
+
+            if (!validatedToken || !validatedToken.success) {
+                console.log("Invalid token");
+                // Handle invalid token scenario (e.g., show error message)
+                return;
+            }
+
+            dispatch(setAuthToken(validatedToken));
+            navigation.replace('HomeScreen');
+
+        } catch (err) {
+            console.log(err);
+
+        }
+
+
+    }
 
     return (
-        <SafeAreaView className=" bg-[#333333]" >
-            <View className="px-2 py-11 h-full">
+        <SafeAreaView className=" bg-[#333333] h-full" >
+            <View className="">
                 <TouchableOpacity onPress={() => navigation.navigate('Onboard')}>
                     <MaterialIcons name={'chevron-left'} size={36} color={'#ffffff'} />
                 </TouchableOpacity>
@@ -31,8 +73,8 @@ const SignupScreen = () => {
                                     <View className="bg-[#444444] rounded-xl px-4 py-3 flex-row items-center justify-between space-x-4 my-0.5">
                                         <TextInput
                                             className="flex-1 text-base text-[#E5E7EB] font-semibold -mt-1"
-                                        // placeholder='Enter email'
-                                        // placeholderTextColor={"#CBD5E0"}
+                                            value={email}
+                                            onChangeText={handleEmail}
                                         />
                                     </View>
                                 </View>
@@ -42,8 +84,8 @@ const SignupScreen = () => {
                                     <View className="bg-[#444444] rounded-xl px-4 py-3 flex-row items-center justify-between space-x-4 my-0.5">
                                         <TextInput
                                             className="flex-1 text-base text-[#E5E7EB] font-semibold -mt-1"
-                                        // placeholder='Enter email'
-                                        // placeholderTextColor={"#CBD5E0"}
+                                            value={password}
+                                            onChangeText={handlePassword}
                                         />
                                     </View>
                                 </View>
@@ -52,7 +94,7 @@ const SignupScreen = () => {
                             <View className="py-2 ">
 
                             </View>
-                            <TouchableOpacity className="w-full  py-3 rounded-lg bg-[#7E57C2] my-3 flex items-center justify-center">
+                            <TouchableOpacity onPress={handleSignin} className="w-full  py-3 rounded-lg bg-[#7E57C2] my-3 flex items-center justify-center">
                                 <Text className=" text-white text-lg font-bold">Sign in</Text>
                             </TouchableOpacity>
                             <View className="flex flex-row items-center justify-center py-2">

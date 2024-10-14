@@ -73,3 +73,21 @@ export const createuser = async (email, password, firstname, lastname) => {
     return null;
   }
 };
+
+//signin
+export const signIn = async (email, password) => {
+  console.log(email);
+  try {
+    const res = await axios.post(`${Baseurl}/api/user/signin`, {
+      email,
+      password,
+    });
+    if (res.status == 200) {
+      return res.data.token;
+    } else {
+      return null;
+    }
+  } catch (err) {
+    return err;
+  }
+};

@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const admin = require("firebase-admin");
+const bcrypt = require("bcrypt");
 
 router.get("/jwtVerification", async (req, res) => {
   if (!req.headers.authorization) {
@@ -39,18 +40,21 @@ router.get("/jwtVerification", async (req, res) => {
 
 router.post("/createuser", async (req, res) => {
   try {
-    const email = req.body.email;
+    const email = req.body.email.toLowerCase();
     const password = req.body.password;
     const firstName = req.body.firstname;
     const lastName = req.body.lastname;
+    const hashedpassword = await bcrypt.hash(password, 10);
 
     const user = await admin.auth().createUser({
       email,
       password,
       emailVerified: true,
+      displayName: `${firstName} ${lastName}`,
     });
 
     // Get ID token
+
     const customToken = await admin.auth().createCustomToken(user.uid, {
       email: user.email,
       firstName: firstName,
@@ -67,7 +71,9 @@ router.post("/createuser", async (req, res) => {
         email,
         firstName,
         lastName,
-        data: JSON.parse(JSON.stringify(user.providerData)),
+        // data: JSON.parse(JSON.stringify(user.providerData)),
+        password: hashedpassword,
+        salt: bcrypt.genSaltSync(10),
       });
 
     const usersRef = admin.firestore().collection("users");
@@ -85,6 +91,45 @@ router.post("/createuser", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).send("Error creating account");
+  }
+});
+
+router.post("/signin", async (req, res) => {
+  try {
+    const email = req.body.email.toLowerCase();
+    const password = req.body.password;
+    console.log("email", password);
+
+    const user = await admin.auth().getUserByEmail(email);
+    console.log(user);
+
+    if (!user) {
+      res.status(401).send("User not found");
+      console.log("user not fund");
+    }
+    const storedpassword = await admin
+      .firestore()
+      .collection("users")
+      .doc(user.uid)
+      .get();
+    const isValidPassword = await bcrypt.compare(
+      password,
+      storedpassword.data().password
+    );
+    if (isValidPassword) {
+      // Get ID token
+      const customToken = await admin.auth().createCustomToken(user.uid, {
+        email: user.email,
+        firstname: user.displayName.split(" ")[0],
+        lastname: user.displayName.split(" ")[0],
+      });
+      return res.status(200).send({ token: customToken });
+    } else {
+      return res.status(401).send("access denied");
+    }
+  } catch (error) {
+    console.error("Error getting user:", error);
+    res.status(500).send("Internal Server Error");
   }
 });
 

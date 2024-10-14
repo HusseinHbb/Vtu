@@ -5,6 +5,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import { Linking } from 'react-native';
 import { sendemail } from '../api';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const SignupScreen = () => {
     const [email, setEmail] = useState("")
@@ -48,70 +49,73 @@ const SignupScreen = () => {
         setisValidEmail(status);
     };
     return (
-        <View className="py-11 px-2 h-full bg-[#333333]">
-            <TouchableOpacity onPress={() => Navigation.goBack()}>
-                <MaterialIcons name={'chevron-left'} size={36} color={'#ffffff'} />
-            </TouchableOpacity>
-            <View>
-                <View className="py-3 px-4 ">
-                    <Text className="font-extrabold text-3xl text-white ">
-                        Welcome to Paypulse
-                    </Text>
-                    <View className="py-6 ">
-                        <View>
-                            <Text className="font-bold text-gray-400 text-lg">Enter your email</Text>
-                        </View>
-                        <View className={`bg-[#444444] rounded-xl px-4 py-3 flex-row items-center justify-between space-x-4 my-0.5 ${!isValidEmail && email !== "" ? 'border-[0.5px] border-red-400' : 'border-none'}`}>
-                            <TextInput
-                                className="flex-1 text-base text-[#E5E7EB] font-semibold -mt-1"
-                                value={email}
-                                onChangeText={HandleEmail}
-                            />
-                        </View>
-                        {!isValidEmail && email !== "" && (
-                            <Text className="text-sm text-red-400">Invalid email address</Text>)}
+        <SafeAreaView className=" bg-[#333333] h-full" >
+            <View className="">
+                <TouchableOpacity onPress={() => Navigation.goBack()}>
+                    <MaterialIcons name={'chevron-left'} size={36} color={'#ffffff'} />
+                </TouchableOpacity>
+                <View>
+                    <View className="py-3 px-4 ">
+                        <Text className="font-extrabold text-3xl text-white ">
+                            Welcome to Paypulse
+                        </Text>
+                        <View className="py-6 ">
+                            <View>
+                                <Text className="font-bold text-gray-400 text-lg">Enter your email</Text>
+                            </View>
+                            <View className={`bg-[#444444] rounded-xl px-4 py-3 flex-row items-center justify-between space-x-4 my-0.5 ${!isValidEmail && email !== "" ? 'border-[0.5px] border-red-400' : 'border-none'}`}>
+                                <TextInput
+                                    className="flex-1 text-base text-[#E5E7EB] font-semibold -mt-1"
+                                    value={email}
+                                    onChangeText={HandleEmail}
+                                />
+                            </View>
+                            {!isValidEmail && email !== "" && (
+                                <Text className="text-sm text-red-400">Invalid email address</Text>)}
 
-                        <View className="py-2 ">
-                            <Text className="text-md text-white">
-                                By creating an account, I agree to paypulse's
-                                <Text onPress={() => Linking.openURL('(link unavailable)')}>
-                                    <Text className="text-md text-white underline"> Terms </Text>
+                            <View className="py-2 ">
+                                <Text className="text-md text-white">
+                                    By creating an account, I agree to paypulse's
+                                    <Text onPress={() => Linking.openURL('(link unavailable)')}>
+                                        <Text className="text-md text-white underline"> Terms </Text>
+                                    </Text>
+                                    <Text className="text-md text-white "> and </Text>
+                                    <TouchableOpacity onPress={() => Linking.openURL('(link unavailable)')}>
+                                        <Text className="text-md text-white underline">Condition </Text>
+                                    </TouchableOpacity>
                                 </Text>
-                                <Text className="text-md text-white "> and </Text>
-                                <TouchableOpacity onPress={() => Linking.openURL('(link unavailable)')}>
-                                    <Text className="text-md text-white underline">Condition </Text>
-                                </TouchableOpacity>
-                            </Text>
-                        </View>
-                        <TouchableOpacity onPress={HandleOnsubmit} className="w-full  py-3 rounded-lg bg-[#7E57C2] my-3 flex items-center justify-center">
-                            {isLoading ? (<Text className=" text-white text-lg font-bold">Sending email...</Text>) : (
-                                <Text className=" text-white text-lg font-bold">Continue</Text>)}
-                        </TouchableOpacity>
-                        <View className="flex flex-row items-center justify-center py-2">
-                            <View className="border-b border-white w-1/3" />
-                            <Text className="text-white text-sm font-bold px-2">Or via social</Text>
-                            <View className="border-b border-white w-1/3" />
-                        </View>
-                        <View className="flex flex-row  my-3 justify-between" >
-                            <View className="flex-1 py-3 rounded-lg bg-[#444444] space-x-2  flex-row flex items-center justify-center mr-2">
-                                <SvgXml xml={googleIcon} width={24} height={24} fill={'#ffffff'} />
-                                <Text className="text-white text-lg font-bold">Google</Text>
                             </View>
-                            <View className="flex-1 py-3 rounded-lg bg-[#444444] flex flex-row items-center space-x-2 justify-center ml-2">
-                                <MaterialIcons name={'facebook'} size={24} color={'#ffffff'} />
-                                <Text className="text-white text-lg font-bold">Facebook</Text>
-                            </View>
-                        </View>
-                        <View className="w-full  py-1 flex-row  items-center justify-center space-x-2">
-                            <Text className="text-white text-base">Have an account !</Text>
-                            <TouchableOpacity onPress={() => Navigation.navigate("LoginScreen")}>
-                                <Text Text className="text-base font-bold text-white" > Log in here </Text>
+                            <TouchableOpacity onPress={HandleOnsubmit} className="w-full  py-3 rounded-lg bg-[#7E57C2] my-3 flex items-center justify-center">
+                                {isLoading ? (<Text className=" text-white text-lg font-bold">Sending email...</Text>) : (
+                                    <Text className=" text-white text-lg font-bold">Continue</Text>)}
                             </TouchableOpacity>
+                            <View className="flex flex-row items-center justify-center py-2">
+                                <View className="border-b border-white w-1/3" />
+                                <Text className="text-white text-sm font-bold px-2">Or via social</Text>
+                                <View className="border-b border-white w-1/3" />
+                            </View>
+                            <View className="flex flex-row  my-3 justify-between" >
+                                <View className="flex-1 py-3 rounded-lg bg-[#444444] space-x-2  flex-row flex items-center justify-center mr-2">
+                                    <SvgXml xml={googleIcon} width={24} height={24} fill={'#ffffff'} />
+                                    <Text className="text-white text-lg font-bold">Google</Text>
+                                </View>
+                                <View className="flex-1 py-3 rounded-lg bg-[#444444] flex flex-row items-center space-x-2 justify-center ml-2">
+                                    <MaterialIcons name={'facebook'} size={24} color={'#ffffff'} />
+                                    <Text className="text-white text-lg font-bold">Facebook</Text>
+                                </View>
+                            </View>
+                            <View className="w-full  py-1 flex-row  items-center justify-center space-x-2">
+                                <Text className="text-white text-base">Have an account !</Text>
+                                <TouchableOpacity onPress={() => Navigation.navigate("LoginScreen")}>
+                                    <Text Text className="text-base font-bold text-white" > Log in here </Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </View>
                 </View>
-            </View>
-        </View >
+            </View >
+        </SafeAreaView>
+
     );
 };
 

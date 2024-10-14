@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Linking } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { createuser, validateUserJWTToken } from '../api';
+import { useDispatch, useSelector } from 'react-redux';
+import { setAuthToken } from '../context/actions/tokenAction';
 
 const Passwordscreen = () => {
 
@@ -13,8 +15,16 @@ const Passwordscreen = () => {
     const [lastName, setlastName] = useState('')
     const [showPassword, setShowPassword] = useState(false);
     const navigation = useNavigation()
-    const route = useRoute()
+    const route = useRoute();
+    const Dispatch = useDispatch()
     const email = route.params.email;
+    const validated = useSelector((state) => state.validatedToken);
+    useEffect(() => {
+        if (validated) {
+            console.log('this is it', validated);
+        }
+    }, [validated]);
+
 
     const HandlePassword = (text) => {
         setPassword(text);
@@ -32,10 +42,15 @@ const Passwordscreen = () => {
             console.log("clicked");
 
             const token = res.token
-            console.log("token", token);
-            const userCred = await validateUserJWTToken(token)
-            console.log("userCred", userCred)
+            console.log(token);
+            const validatedToken = await validateUserJWTToken(token)
+            if (!validatedToken || !validatedToken.success) {
+                console.log("invalid token");
+                return;
+            }
 
+
+            Dispatch(setAuthToken(validatedToken))
             navigation.navigate('HomeScreen')
         } catch (err) {
             return null

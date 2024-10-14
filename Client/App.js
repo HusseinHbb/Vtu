@@ -9,8 +9,11 @@ import {
   SignupOtpScreen,
   SignupScreen,
   PasswordScreen,
+  SplashScreen,
 } from "./screens";
-
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import { store, persistor } from "./context/store";
 const Stack = createNativeStackNavigator();
 const transitionConfig = {
   animation: "slide",
@@ -21,20 +24,37 @@ const transitionConfig = {
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-          animation: "ios",
-          gestureEnabled: true,
-        }}
-      >
-        <Stack.Screen name="Onboard" component={OnboardingScreen} />
-        <Stack.Screen name="HomeScreen" component={HomeScreen} />
-        <Stack.Screen name="LoginScreen" component={LoginScreen} />
-        <Stack.Screen name="Signup" component={SignupScreen} />
-        <Stack.Screen name="SignupOtpScreen" component={SignupOtpScreen} />
-        <Stack.Screen name="PasswordScreen" component={PasswordScreen} />
-      </Stack.Navigator>
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>
+          <Stack.Navigator
+            screenOptions={{
+              headerShown: false,
+              animation: "ios",
+              gestureEnabled: true,
+            }}
+          >
+            <Stack.Screen name="SplashScreen" component={SplashScreen} />
+            <Stack.Screen
+              name="Onboard"
+              component={OnboardingScreen}
+              options={{
+                animation: "ios",
+              }}
+            />
+            <Stack.Screen
+              name="HomeScreen"
+              component={HomeScreen}
+              options={{
+                animation: "ios",
+              }}
+            />
+            <Stack.Screen name="LoginScreen" component={LoginScreen} />
+            <Stack.Screen name="Signup" component={SignupScreen} />
+            <Stack.Screen name="SignupOtpScreen" component={SignupOtpScreen} />
+            <Stack.Screen name="PasswordScreen" component={PasswordScreen} />
+          </Stack.Navigator>
+        </PersistGate>
+      </Provider>
     </NavigationContainer>
   );
 };
