@@ -22,7 +22,10 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.miit.app"
+      "package": "com.miit.app",
+      "scrollEnabled": true,
+      "nestedScrollEnabled": true,
+      "overScrollMode": "always"
     },
     "web": {
       "favicon": "./assets/favicon.png"

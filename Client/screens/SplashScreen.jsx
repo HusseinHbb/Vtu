@@ -21,25 +21,35 @@ const SplashScreen = () => {
                 if (currentTime < expirationTime && currentTime > issuedAtTime) {
                     return true
                 } else {
+                    console.log("token expired");
                     return false
+
+
                 }
             };
         }
-
+        console.log(isValidToken())
 
         const checkTokenValidity = () => {
-            if (!isValidToken() || validatedToken.data === null) {
+            if (!validatedToken || !validatedToken.token || !validatedToken.token.data) {
                 console.log("Token not found", validatedToken);
-                Navigation.replace("Onboard", {
-                    animation: "none",
-                });
+                Navigation.replace("OnboardingScreen");
             } else {
-                Navigation.replace("HomeScreen", {
-                    animation: "none",
-                });
-                console.log("This is a validated token");
+                const tokenIsValid = isValidToken();
+                console.log("Token validity:", tokenIsValid);
+
+                if (tokenIsValid) {
+                    console.log("Navigating to HomeScreen");
+                    Navigation.replace("HomeScreen");
+                } else {
+                    console.log("Navigating to LoginScreen");
+                    Navigation.reset({
+                        index: 0,
+                        routes: [{ name: "LoginScreen" }]
+                    });
+                }
             }
-        };
+        }
 
         setTimeout(checkTokenValidity, 350);
     }, [validatedToken, Navigation]);

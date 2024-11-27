@@ -8,7 +8,7 @@ import { createuser, validateUserJWTToken } from '../api';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuthToken } from '../context/actions/tokenAction';
 
-const Passwordscreen = () => {
+const CreateAccountScreen = () => {
 
     const [password, setPassword] = useState('');
     const [firstName, setFirstName] = useState('');
@@ -133,4 +133,4 @@ const Passwordscreen = () => {
     )
 }
 
-export default Passwordscreen;
+export default CreateAccountScreen;

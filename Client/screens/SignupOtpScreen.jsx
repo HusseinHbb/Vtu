@@ -20,7 +20,7 @@ const SignupOtpScreen = () => {
             const res = await verifyotp(email, otp)
             console.log(res);
             if (res == 200) {
-                Navigation.navigate('PasswordScreen', { email: email })
+                Navigation.navigate('CreateAccountScreen', { email: email })
             } else {
                 console.log("wrong password");
                 return null;
