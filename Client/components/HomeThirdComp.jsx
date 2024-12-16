@@ -1,24 +1,36 @@
 import { View, Text, Image } from 'react-native'
 import React from 'react'
+import { bgSecColor } from './objects'
 
 const HomeThirdComp = () => {
     const pic = require('./../assets/index')
     return (
-        <View className="h-36 w-full p-3 rounded-2xl bg-[#151515] mt-4 ">
-            <View className="bg-[#191919]  p-3 rounded-2xl w-full h-full space-x-3 flex-row ">
-                <View>
-                    <Image source={pic.gigphoto} className="h-full w-32 rounded-2xl" resizeMode='cover' />
-                </View>
-                <View className="py-1 flex-col justify-">
-                    <Text className="text-white font-extrabold text-base">
-                        Real Estate Property
-                    </Text>
-                    <Text className="text-white text-sm">
-                        ROI:<Text className="text-green-500 font-extrabold" > 25%</Text>
-                    </Text>
-                </View>
+        // <View className="h-36 w-full p-3 rounded-2xl bg-[#151515] mt-4 ">
+        <View className="bg-[#191919] relative p-3 rounded-2xl w-80 h-30 space-x-3 mt-4 flex-row ">
+            <View>
+                <Image source={pic.gigphoto} className="h-24 w-24 rounded-2xl" resizeMode='cover' />
+            </View>
+            <View className="py-1 flex-col justify-">
+                <Text className="text-white font-extrabold text-sm">
+                    Real Estate Property
+                </Text>
+
+            </View>
+            {/* bg-[#6e47b117] */}
+            <View className=" items-center  justify-center absolute top-2 p-1 right-2 rounded-full">
+
+                <Text className="text-green-500 text-xs font-extrabold" >5.0</Text>
+                {/* <Text className="text-white text-xs  font-bold text-right" style={{ fontSize: "10px" }}>
+                        ROI
+                    </Text> */}
+
+            </View>
+            <View className=" items-center  justify-center bg-[#6e47b1] absolute bottom-2 p-1  right-2 rounded-full">
+
+                <Text className="text-[#e3e2e2] text-xs font-bold " >Subscribe +</Text>
             </View>
         </View>
+        // </View>
     )
 }
 

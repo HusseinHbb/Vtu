@@ -1,6 +1,10 @@
 const router = require("express").Router();
 const admin = require("firebase-admin");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const fs = require("fs");
+const privateKey = fs.readFileSync("private.key", "utf8");
+const publicKey = fs.readFileSync("public.key", "utf8");
 
 router.get("/jwtVerification", async (req, res) => {
   if (!req.headers.authorization) {
@@ -9,31 +13,22 @@ router.get("/jwtVerification", async (req, res) => {
 
   const token = req.headers.authorization.split(" ")[1];
   try {
-    const decodedToken = JSON.parse(
-      Buffer.from(token.split(".")[1], "base64").toString("utf8")
-    );
-    if (decodedToken.uid) {
+    jwt.verify(token, publicKey, (err, decoded) => {
+      if (err) {
+        return res.status(401).json({ success: false, msg: "Invalid token" });
+      }
       const userData = {
-        uid: decodedToken.uid,
-        email: decodedToken.claims.email, // Access email from claims
-        firstName: decodedToken.claims.firstName,
-        lastName: decodedToken.claims.lastName,
+        uid: decoded.uid,
+        email: decoded.email,
+        firstName: decoded.firstName,
+        lastName: decoded.lastName,
       };
-
-      // await admin
-      //   .firestore()
-      //   .collection("users")
-      //   .doc(decodedToken.uid)
-      //   .set(userData);
-
-      return res.status(200).json({ success: true, data: decodedToken });
-    } else {
-      return res.status(401).json({ success: false, msg: "Invalid token" });
-    }
+      return res.status(200).json({ success: true, data: decoded });
+    });
   } catch (err) {
     return res.status(500).send({
       success: false,
-      msg: `Error in extracting the token : ${err}`,
+      msg: `Error in verifying the token : ${err}`,
     });
   }
 });
@@ -55,11 +50,19 @@ router.post("/createuser", async (req, res) => {
 
     // Get ID token
 
-    const customToken = await admin.auth().createCustomToken(user.uid, {
-      email: user.email,
-      firstName: firstName,
-      lastName: lastName,
-    });
+    const customToken = jwt.sign(
+      {
+        uid: user.uid,
+        email: user.email,
+        firstName: firstName,
+        lastName: lastName,
+        exp: Math.floor(Date.now() / 1000) + 90 * 24 * 60 * 60, // 90 days
+      },
+      privateKey,
+      {
+        algorithm: "RS256",
+      }
+    );
     res.send({ token: customToken, usercred: user });
 
     await admin
@@ -98,7 +101,7 @@ router.post("/signin", async (req, res) => {
   try {
     const email = req.body.email.toLowerCase();
     const password = req.body.password;
-    console.log("email", password);
+    console.log("email", email);
 
     const user = await admin.auth().getUserByEmail(email);
     console.log(user);
@@ -118,11 +121,19 @@ router.post("/signin", async (req, res) => {
     );
     if (isValidPassword) {
       // Get ID token
-      const customToken = await admin.auth().createCustomToken(user.uid, {
-        email: user.email,
-        firstname: user.displayName.split(" ")[0],
-        lastname: user.displayName.split(" ")[0],
-      });
+      const customToken = jwt.sign(
+        {
+          uid: user.uid,
+          email: user.email,
+          firstName: user.displayName.split(" ")[0],
+          lastName: user.displayName.split(" ")[1],
+          exp: Math.floor(Date.now() / 1000) + 90 * 24 * 60 * 60, // 90 days
+        },
+        privateKey,
+        {
+          algorithm: "RS256",
+        }
+      );
       return res.status(200).send({ token: customToken });
     } else {
       return res.status(401).send("access denied");
