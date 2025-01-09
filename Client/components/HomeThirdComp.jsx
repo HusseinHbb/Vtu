@@ -21,21 +21,6 @@ const HomeThirdComp = () => {
             <View className=" items-center flex-row  justify-center absolute top-2 p-1 right-2 rounded-full">
                 <MaterialIcons name='star' size={12} color={"#e3e2e2"} />
                 <Text className="text-[#e3e2e2] text-xs font-extrabold" > 5.0 </Text>
-                <Text className="text-[#e3e2e2] text-xs font-extrabold" > 5.0 </Text>
-                <Text className="text-[#e3e2e2] text-xs font-extrabold" > 5.0 </Text>
-                <Text className="text-[#e3e2e2] text-xs font-extrabold" > 5.0 </Text>
-                <Text className="text-[#e3e2e2] text-xs font-extrabold" > 5.0 </Text>
-                <Text className="text-[#e3e2e2] text-xs font-extrabold" > 5.0 </Text>
-                <Text className="text-[#e3e2e2] text-xs font-extrabold" > 5.0 </Text>
-                <Text className="text-[#e3e2e2] text-xs font-extrabold" > 5.0 </Text>
-                <Text className="text-[#e3e2e2] text-xs font-extrabold" > 5.0 </Text>
-                <Text className="text-[#e3e2e2] text-xs font-extrabold" > 5.0 </Text>
-                <Text className="text-[#e3e2e2] text-xs font-extrabold" > 5.0 </Text>
-                <Text className="text-[#e3e2e2] text-xs font-extrabold" > 5.0 </Text>
-                <Text className="text-[#e3e2e2] text-xs font-extrabold" > 5.0 </Text>
-                <Text className="text-[#e3e2e2] text-xs font-extrabold" > 5.0 </Text>
-                <Text className="text-[#e3e2e2] text-xs font-extrabold" > 5.0 </Text>
-                <Text className="text-[#e3e2e2] text-xs font-extrabold" > 5.0 </Text>
 
 
                 {/* <Text className="text-white text-xs  font-bold text-right" style={{ fontSize: "10px" }}>
@@ -49,6 +34,8 @@ const HomeThirdComp = () => {
             </View>
         </View>
         // </View>
+
+
     )
 }
 

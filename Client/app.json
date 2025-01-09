@@ -15,7 +15,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "Miit"
     },
     "android": {
       "adaptiveIcon": {
@@ -35,6 +36,12 @@
         "projectId": "406fa66e-e403-4a89-b3ae-1a9f2ea64f92"
       }
     },
-    "owner": "harbest_t"
+    "owner": "harbest_t",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/406fa66e-e403-4a89-b3ae-1a9f2ea64f92"
+    }
   }
 }

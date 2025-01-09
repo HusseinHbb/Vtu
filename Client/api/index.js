@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const Baseurl =
-  "https://jmk55ltl-5001.euw.devtunnels.ms/vtu-app-b6d1f/us-central1/app";
+  "https://0p013dl4-5001.uks1.devtunnels.ms/vtu-app-b6d1f/us-central1/app";
 
 // Verify token
 export const validateUserJWTToken = async (token) => {
