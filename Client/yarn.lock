@@ -5171,7 +5171,7 @@ expo-updates@~0.25.27:
     ignore "^5.3.1"
     resolve-from "^5.0.0"
 
-expo@51.0.39:
+expo@^51.0.39:
   version "51.0.39"
   resolved "https://registry.yarnpkg.com/expo/-/expo-51.0.39.tgz#d9efab081a91a0d3e925b0e4648722b13a8fceae"
   integrity sha512-Cs/9xopyzJrpXWbyVUZnr37rprdFJorRgfSp6cdBfvbjxZeKnw2MEu7wJwV/s626i5lZTPGjZPHUF9uQvt51cg==

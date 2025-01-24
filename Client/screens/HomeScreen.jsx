@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { favicon } from "../assets"
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { bgcolor } from '../components/objects';
-import { HomeFirstComp, HomeSecondComp } from '../components';
+import { HomeFirstComp, HomeForthComp, HomeSecondComp } from '../components';
 import HomeThirdComp from '../components/HomeThirdComp';
 
 
@@ -37,11 +37,11 @@ const HomeScreen = () => {
 
     }
     return (
-        <SafeAreaView className={`pt-1 px-3  w-full flex flex-col justify-between bg-[#111111] h-full`}>
+        <SafeAreaView className={`pt-1 px-3.5  w-full flex flex-col justify-between bg-[#101010] h-full`}>
             <View className="flex flex-row  justify-between">
                 <View className="flex flex-row space-x-2 items-center">
                     <View>
-                        <Image source={pic.harbest} className="w-11 h-11 rounded-full" resizeMode='cover' />
+                        <Image source={pic.harbest} className="w-10 h-10 rounded-full" resizeMode='cover' />
                     </View>
                     <View>
                         <Text className="text-white text-lg font-bold">Hi, {userFirstname}</Text>
@@ -81,14 +81,36 @@ const HomeScreen = () => {
                     <HomeFirstComp />
                 </View>
                 <View className="">
-                    <View className="rounded-2xl justify-center items-center bg-[#151515] " >
+                    <View className="rounded-2xl justify-center items-center bg-[#191919] " >
 
                         <HomeSecondComp />
                     </View>
 
                 </View>
 
-                <HomeThirdComp />
+                <View className="mt-6">
+                    <Text className="text-white font-extrabold text-lg text-gray-100">Investors You may like</Text>
+                    <ScrollView horizontal={true}>
+                        <View className="flex-row mt-1 ">
+                            <HomeThirdComp />
+                            <HomeThirdComp />
+                        </View>
+                    </ScrollView>
+                </View>
+
+                <View className="mt-6">
+                    <Text className="text-white font-extrabold text-lg text-gray-100">Relevant Investments</Text>
+
+                    <ScrollView horizontal={true}>
+                        <View className="flex-row mt-1">
+                            <HomeForthComp />
+                            <HomeForthComp />
+                            <HomeForthComp />
+                            <HomeForthComp />
+                            <HomeForthComp />
+                        </View>
+                    </ScrollView>
+                </View>
 
             </ScrollView>
 
