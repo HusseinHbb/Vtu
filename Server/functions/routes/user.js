@@ -22,6 +22,7 @@ router.get("/jwtVerification", async (req, res) => {
         email: decoded.email,
         firstName: decoded.firstName,
         lastName: decoded.lastName,
+        username: decoded.username,
       };
       return res.status(200).json({ success: true, data: decoded });
     });
@@ -74,10 +75,16 @@ router.post("/createuser", async (req, res) => {
         email,
         firstName,
         lastName,
+        username: "",
         // data: JSON.parse(JSON.stringify(user.providerData)),
         password: hashedpassword,
         salt: bcrypt.genSaltSync(10),
       });
+    await admin
+      .firestore()
+      .collection("usernames")
+      .doc(user.uid)
+      .set({ username: "" });
 
     const usersRef = admin.firestore().collection("users");
     const oldDocRef = usersRef.doc(user.email);
@@ -119,14 +126,21 @@ router.post("/signin", async (req, res) => {
       password,
       storedpassword.data().password
     );
+    const username = await admin
+      .firestore()
+      .collection("users")
+      .doc(user.uid)
+      .get();
     if (isValidPassword) {
       // Get ID token
+
       const customToken = jwt.sign(
         {
           uid: user.uid,
           email: user.email,
           firstName: user.displayName.split(" ")[0],
           lastName: user.displayName.split(" ")[1],
+          username: username.data().username,
           exp: Math.floor(Date.now() / 1000) + 90 * 24 * 60 * 60, // 90 days
         },
         privateKey,
@@ -134,6 +148,8 @@ router.post("/signin", async (req, res) => {
           algorithm: "RS256",
         }
       );
+      console.log("username", username);
+
       return res.status(200).send({ token: customToken });
     } else {
       return res.status(401).send("access denied");
@@ -141,6 +157,58 @@ router.post("/signin", async (req, res) => {
   } catch (error) {
     console.error("Error getting user:", error);
     res.status(500).send("Internal Server Error");
+  }
+});
+
+//username
+router.post("/username", async (req, res) => {
+  try {
+    const username = req.body.username;
+    const uid = req.body.uid;
+    console.log(username);
+    console.log(uid);
+
+    // const user = await admin.auth().getUserByProviderUid(uid);
+    await admin
+      .firestore()
+      .collection("usernames")
+      .doc(uid)
+      .update({ username: username });
+    await admin
+      .firestore()
+      .collection("users")
+      .doc(uid)
+      .update({ username: username });
+
+    const getusername = await admin
+      .firestore()
+      .collection("users")
+      .doc(uid)
+      .get();
+
+    const updatedusername = getusername.data().username;
+    console.log(updatedusername);
+    return res.status(200).send({ username: updatedusername });
+  } catch (error) {}
+});
+
+//get username
+router.get("/getusername/:uid", async (req, res) => {
+  try {
+    const uid = req.params.uid;
+    console.log(uid);
+
+    const getusername = await admin
+      .firestore()
+      .collection("users")
+      .doc(`${uid}`)
+      .get();
+    const username = getusername.data().username;
+    console.log(username);
+    return res.status(200).send({ username: username });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send({ message: "Error getting username" });
   }
 });
 

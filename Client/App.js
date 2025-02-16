@@ -11,6 +11,7 @@ import {
   OnboardingScreen,
   PayScreen,
   PinScreen,
+  ProfileScreen,
   SignupOtpScreen,
   SignupScreen,
   SplashScreen,
@@ -106,6 +107,7 @@ const App = () => {
               />
               <Stack.Screen name="LoginScreen" component={LoginScreen} />
               <Stack.Screen name="Signup" component={SignupScreen} />
+              <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
               <Stack.Screen
                 name="SignupOtpScreen"
                 component={SignupOtpScreen}

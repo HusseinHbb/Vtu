@@ -4,9 +4,10 @@ import { SvgXml } from 'react-native-svg';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import { Linking } from 'react-native';
-import { signIn, validateUserJWTToken } from '../api';
+import { getusername, signIn, validateUserJWTToken } from '../api';
 import { useDispatch } from 'react-redux';
 import { setAuthToken } from '../context/actions/tokenAction';
+import { setUserName } from '../context/actions/usenameAction';
 
 const SignupScreen = () => {
     const googleIcon = `f
@@ -42,7 +43,10 @@ const SignupScreen = () => {
                 // Handle invalid token scenario
                 return;
             }
-
+            const uid = validatedToken?.data?.uid
+            console.log(uid)
+            const username = await getusername(validatedToken?.data?.uid)
+            dispatch(setUserName(username))
             dispatch(setAuthToken(validatedToken));
             navigation.replace('HomeScreen');
 

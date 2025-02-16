@@ -91,3 +91,24 @@ export const signIn = async (email, password) => {
     return err;
   }
 };
+
+//username
+export const createusername = async (username, uid) => {
+  try {
+    const res = await axios.post(`${Baseurl}/api/user/username`, {
+      username,
+      uid,
+    });
+    return res.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+// get username
+export const getusername = async (uid) => {
+  try {
+    const res = await axios.get(`${Baseurl}/api/user/getusername/${uid}`);
+    return res.data;
+  } catch (error) {}
+};

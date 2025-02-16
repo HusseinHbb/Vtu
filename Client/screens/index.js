@@ -10,3 +10,4 @@ export { default as MoreScreen } from "./More";
 export { default as PayScreen } from "./Pay";
 export { default as AssetsScreen } from "./AssetsScreen";
 export { default as InvestScreen } from "./Invest";
+export { default as ProfileScreen } from "./ProfileScreen";

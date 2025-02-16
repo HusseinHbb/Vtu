@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Image, ScrollView, StyleSheet, Platform, RefreshControl } from 'react-native'
+import { View, Text, TouchableOpacity, Image, ScrollView, StyleSheet, Platform, RefreshControl, Pressable } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { setAuthToken, setTokenNull } from '../context/actions/tokenAction';
@@ -40,11 +40,11 @@ const HomeScreen = () => {
         <SafeAreaView className={`pt-1 px-3.5  w-full flex flex-col justify-between bg-[#101010] h-full`}>
             <View className="flex flex-row  justify-between">
                 <View className="flex flex-row space-x-2 items-center">
-                    <View>
+                    <Pressable onPress={() => Navigation.navigate('ProfileScreen')}>
                         <Image source={pic.harbest} className="w-10 h-10 rounded-full" resizeMode='cover' />
-                    </View>
+                    </Pressable>
                     <View>
-                        <Text className="text-white text-lg font-bold">Hi, {userFirstname}</Text>
+                        <Text className="text-white text-base font-bold">Hi, {userFirstname}</Text>
                     </View>
                 </View>
                 <View className="flex flex-row space-x-2 items-center">
